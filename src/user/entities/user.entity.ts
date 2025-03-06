@@ -4,47 +4,60 @@ import * as bcrypt from 'bcrypt';
 import {
   IsEmail,
   IsEnum,
+  IsNotEmpty,
   IsOptional,
-  IsPhoneNumber,
   IsString,
-  Length,
-  Matches,
-  ValidateIf,
 } from 'class-validator';
 import { Schema } from 'common/decorators/schema.decorator';
 import { DefaultEntity } from 'common/entities/default.entity';
 import { CollectionName } from 'common/enums/collection-name.enum';
 import { Document } from 'common/types/document.type';
 import { SchemaFactory } from 'common/utils/schema-factory.util';
-import { UserRole } from '../enum/user-role.enum';
+import { UserRole } from '../enums/user-role.enum';
+import { CallbackError } from 'mongoose';
 
 @InputType({ isAbstract: true })
 @ObjectType()
 @Schema({ collection: CollectionName.USERS })
 export class UserEntity extends DefaultEntity {
-  @Prop({ required: true, unique: true })
+  @Prop({ type: String, required: true })
   @Field(() => String)
+  @IsNotEmpty()
+  @IsString()
   username: string;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ type: String, required: true, unique: true })
   @Field(() => String)
+  @IsNotEmpty()
+  @IsString()
+  @IsEmail()
   email: string;
 
-  @Prop({ required: true })
+  @Prop({ type: String, required: true })
   @Field(() => String)
+  @IsNotEmpty()
+  @IsString()
   password: string;
 
-  @Field(() => UserRole, { nullable: true })
   @Prop({ type: String })
-  role?: string;
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  avatar?: string;
 
-  hashedRefreshToken: string;
-  isVerified: boolean;
-  verificationCode: string;
-  contacts: UserEntity[];
-  blockedUser: UserEntity[];
-  profilePicture: string;
-  lastSeen: Date;
+  @Prop({
+    type: String,
+    enum: [...Object.values(UserRole)],
+    default: UserRole.USER,
+  })
+  @Field(() => UserRole, { nullable: true })
+  @IsEnum(UserRole)
+  @IsOptional()
+  role?: UserRole;
+
+  // contacts: UserEntity[];
+  // blockedUser: UserEntity[];
+  // lastSeen: Date;
 }
 
 type TUser = Document<UserEntity>;
@@ -55,17 +68,17 @@ UserSchema.index({ displayName: 1, phone: 1 });
 
 export { UserSchema, TUser };
 
-// UserSchema.pre('save', async function (next) {
-//   const user = this as TUser;
-//   if (!user.password) {
-//     next();
-//     return;
-//   }
-//   if (!user.isModified('password')) return next();
-//   try {
-//     user.password = await bcrypt.hash(user.password, 10);
-//     return next();
-//   } catch (e) {
-//     return next(e as CallbackError);
-//   }
-// });
+UserSchema.pre('save', async function (next) {
+  const user = this as TUser;
+  if (!user.password) {
+    next();
+    return;
+  }
+  if (!user.isModified('password')) return next();
+  try {
+    user.password = await bcrypt.hash(user.password, 10);
+    return next();
+  } catch (e) {
+    return next(e as CallbackError);
+  }
+});
