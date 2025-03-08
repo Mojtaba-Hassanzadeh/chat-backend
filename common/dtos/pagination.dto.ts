@@ -7,6 +7,8 @@ export class PaginationInput {
 
   @Field(() => Int, { defaultValue: 24, nullable: true })
   count: number;
+
+  match?: any;
 }
 
 export class PaginationOutput extends CoreOutput {

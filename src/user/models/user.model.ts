@@ -1,6 +1,7 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import * as bcrypt from 'bcrypt';
 import { UserModelDto } from '../dtos/user-model.dto';
+import { UserRole } from '../enums/user-role.enum';
 
 export class UserModel extends AggregateRoot {
   constructor(private readonly userModelDto: UserModelDto) {
@@ -27,7 +28,7 @@ export class UserModel extends AggregateRoot {
     return this.userModelDto.avatar;
   }
 
-  getRole(): string {
+  getRole(): UserRole {
     return this.userModelDto.role;
   }
 
