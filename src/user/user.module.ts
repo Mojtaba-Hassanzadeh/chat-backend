@@ -9,6 +9,10 @@ import { UserRepository } from './user.repository';
 import { UserEntityFactory } from './entities/user.factory';
 import { UserModelFactory } from './models/user-model.factory';
 import { UserResolvers } from './resolvers';
+import { PermissionHelepr } from 'src/permission/helper/permission-helper';
+import { PermissionRepository } from 'src/permission/permission.repository';
+import { PermissionEntityFactory } from 'src/permission/entity/permission.factory';
+import { PermissionModelFactory } from 'src/permission/model/permission-model.factory';
 
 @Module({
   imports: [
@@ -23,6 +27,9 @@ import { UserResolvers } from './resolvers';
     UserRepository,
     UserEntityFactory,
     UserModelFactory,
+    PermissionRepository,
+    PermissionEntityFactory,
+    PermissionModelFactory,
   ],
   exports: [...UserUsecases],
 })

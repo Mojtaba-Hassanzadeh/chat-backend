@@ -3,6 +3,8 @@ import { CreateUserUsecase } from '../usecases/create-user.usecase';
 import { UserMutation } from '../dtos/user.dto';
 import { INITIAL_RESPONSE } from 'common/constants/initial-response.constant';
 import { CreateUserInput, CreateUserOutput } from '../dtos/create-user.dto';
+import { UserPermission } from '../permission/user-permission';
+import { PanelGuard } from 'src/auth/guards/panel.guard';
 
 @Resolver(() => UserMutation)
 export class UserMutationResolver {
@@ -14,7 +16,7 @@ export class UserMutationResolver {
   }
 
   @ResolveField(() => CreateUserOutput)
-  // @PanelGuard<MethodDecorator>(UserPermission.CREATE)
+  @PanelGuard<MethodDecorator>(UserPermission.CREATE)
   async createUser(
     @Args('input') input: CreateUserInput,
   ): Promise<CreateUserOutput> {
