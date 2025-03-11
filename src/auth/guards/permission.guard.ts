@@ -9,7 +9,7 @@ import { Reflector } from '@nestjs/core';
 import { QueryBus } from '@nestjs/cqrs';
 import { GqlExecutionContext } from '@nestjs/graphql/dist/services/gql-execution-context';
 import { PermissionType } from 'common/permissions/permission-base';
-import { PermissionHelepr } from 'src/permission/helper/permission-helper';
+import { PermissionHelper } from 'src/permission/helper/permission-helper';
 import { PERMISSION_KEY } from '../constants/common.constant';
 
 @Injectable()
@@ -17,7 +17,7 @@ export class PermissionGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
     private readonly queryBus: QueryBus,
-    private readonly permissionHelper: PermissionHelepr,
+    private readonly permissionHelper: PermissionHelper,
   ) {}
 
   async canActivate(ctx: ExecutionContext): Promise<boolean> {

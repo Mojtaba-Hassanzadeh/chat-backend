@@ -9,27 +9,30 @@ import { UserRepository } from './user.repository';
 import { UserEntityFactory } from './entities/user.factory';
 import { UserModelFactory } from './models/user-model.factory';
 import { UserResolvers } from './resolvers';
-import { PermissionHelepr } from 'src/permission/helper/permission-helper';
-import { PermissionRepository } from 'src/permission/permission.repository';
-import { PermissionEntityFactory } from 'src/permission/entity/permission.factory';
-import { PermissionModelFactory } from 'src/permission/model/permission-model.factory';
+import { MailModule } from 'src/email/mail.module';
+import { SmsModule } from 'src/sms/sms.module';
+import { UserEventHandlers } from './event';
+import UserDataLoader from './user.loader';
+import { UserHelper } from './helper/user-helper';
 
 @Module({
   imports: [
     CqrsModule,
     MongooseModule.forFeature([{ name: UserEntity.name, schema: UserSchema }]),
+    SmsModule,
+    MailModule,
   ],
   providers: [
     ...UserCommandHandlers,
     ...UserQueryHandlers,
     ...UserUsecases,
     ...UserResolvers,
+    ...UserEventHandlers,
     UserRepository,
     UserEntityFactory,
     UserModelFactory,
-    PermissionRepository,
-    PermissionEntityFactory,
-    PermissionModelFactory,
+    UserDataLoader,
+    UserHelper,
   ],
   exports: [...UserUsecases],
 })

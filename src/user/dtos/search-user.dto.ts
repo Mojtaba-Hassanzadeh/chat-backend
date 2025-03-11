@@ -1,11 +1,20 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
-import { IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 import { PaginationInput, PaginationOutput } from 'common/dtos/pagination.dto';
-import { UserRole } from '../enums/user-role.enum';
 import { UserEntity } from '../entities/user.entity';
 
 @InputType()
 export class SearchUserInput extends PaginationInput {
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  text?: string;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  displayName?: string;
+
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
@@ -16,9 +25,23 @@ export class SearchUserInput extends PaginationInput {
   @IsString()
   email?: string;
 
-  @Field(() => UserRole, { nullable: true })
+  @Field(() => String, { nullable: true })
   @IsOptional()
-  role?: UserRole;
+  @IsString()
+  phone?: string;
+
+  @Field(() => Boolean, { nullable: true })
+  @IsOptional()
+  @IsBoolean()
+  isVerified?: boolean;
+
+  @Field(() => [String], { nullable: true })
+  @IsOptional()
+  roles?: string[];
+
+  @Field(() => [String], { nullable: true })
+  @IsOptional()
+  permissions?: string[];
 }
 
 @ObjectType()

@@ -7,7 +7,7 @@ export class DeleteUserHandler implements ICommandHandler<DeleteUserCommand> {
   constructor(private readonly userRepository: UserRepository) {}
 
   async execute({ deleteUserInput }: DeleteUserCommand): Promise<void> {
-    const { id } = deleteUserInput;
-    await this.userRepository.delete(id);
+    const { userId } = deleteUserInput;
+    await this.userRepository.delete(userId);
   }
 }

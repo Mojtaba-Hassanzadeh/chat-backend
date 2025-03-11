@@ -4,60 +4,127 @@ import * as bcrypt from 'bcrypt';
 import {
   IsEmail,
   IsEnum,
-  IsNotEmpty,
   IsOptional,
+  IsPhoneNumber,
   IsString,
+  Length,
+  Matches,
+  ValidateIf,
 } from 'class-validator';
 import { Schema } from 'common/decorators/schema.decorator';
 import { DefaultEntity } from 'common/entities/default.entity';
 import { CollectionName } from 'common/enums/collection-name.enum';
 import { Document } from 'common/types/document.type';
 import { SchemaFactory } from 'common/utils/schema-factory.util';
-import { UserRole } from '../enums/user-role.enum';
-import { CallbackError } from 'mongoose';
+import mongoose, { CallbackError } from 'mongoose';
+import { PermissionEntity } from 'src/permission/entity/permission.entity';
+import { RoleEntity } from 'src/role/entity/role.entity';
+import { UserImageStatusEnum } from '../enums/user-image-status.enum';
+import { ImageObject } from 'common/entities/image-object.entity';
 
 @InputType({ isAbstract: true })
 @ObjectType()
 @Schema({ collection: CollectionName.USERS })
 export class UserEntity extends DefaultEntity {
-  @Prop({ type: String, required: true })
-  @Field(() => String)
-  @IsNotEmpty()
-  @IsString()
-  username: string;
-
-  @Prop({ type: String, required: true, unique: true })
-  @Field(() => String)
-  @IsNotEmpty()
-  @IsString()
-  @IsEmail()
-  email: string;
-
-  @Prop({ type: String, required: true })
-  @Field(() => String)
-  @IsNotEmpty()
-  @IsString()
-  password: string;
-
-  @Prop({ type: String })
   @Field(() => String, { nullable: true })
+  @Prop()
   @IsOptional()
   @IsString()
-  avatar?: string;
+  @Length(3, 30, {
+    message: 'نام کاربری باید بین 3 تا 30 کاراکتر باشد',
+  })
+  displayName?: string;
+
+  @Field(() => String, { nullable: true })
+  @Prop()
+  @IsString()
+  @IsOptional()
+  @Length(3, 30, {
+    message: 'نام کاربری باید بین 3 تا 30 کاراکتر باشد',
+  })
+  username?: string;
 
   @Prop({
     type: String,
-    enum: [...Object.values(UserRole)],
-    default: UserRole.USER,
+    nullable: true,
+    unique: true,
+    sparse: true,
   })
-  @Field(() => UserRole, { nullable: true })
-  @IsEnum(UserRole)
   @IsOptional()
-  role?: UserRole;
+  @Field(() => String, { nullable: true })
+  @ValidateIf((o: UserEntity) => !!(!o.phone || o.email))
+  @IsEmail({}, { message: 'ENTERED_EMAIL_FORMAT_NOT_CORRECT' })
+  email?: string;
 
-  // contacts: UserEntity[];
-  // blockedUser: UserEntity[];
-  // lastSeen: Date;
+  @Field(() => String, { nullable: true })
+  @Prop({
+    type: String,
+    nullable: true,
+    unique: true,
+    sparse: true,
+  })
+  @IsOptional()
+  @IsString()
+  @ValidateIf((o: UserEntity) => !!(!o.email || o.phone))
+  @IsPhoneNumber('IR', { message: 'ENTERED_PHONE_NUMBER_FORMAT_NOT_CORRECT' })
+  phone?: string;
+
+  @Field(() => [RoleEntity], { nullable: true })
+  @Prop({ type: [String] })
+  @IsString({ each: true })
+  @IsOptional()
+  roles?: string[];
+
+  @Field(() => [PermissionEntity], { nullable: true })
+  @Prop({ type: [String] })
+  @IsString({ each: true })
+  @IsOptional()
+  permissions?: string[];
+
+  @Prop({
+    type: String,
+    required: false,
+    select: false,
+  })
+  @IsString()
+  @Matches(/^(?=.*\d)(?=.*[a-zA-Z]).{6,}$/, {
+    message: 'رمز عبور باید حداقل 6 کاراکتر ، حداقل یک حرف و یک عدد داشته باشد',
+  })
+  @IsOptional()
+  password?: string;
+
+  @Prop({
+    type: Boolean,
+    default: false,
+    nullable: true,
+  })
+  @Field(() => Boolean, { nullable: true })
+  isVerified?: boolean;
+
+  @Prop({ type: [String], nullable: true })
+  refreshToken?: string[];
+
+  @Prop({
+    type: Boolean,
+    default: false,
+  })
+  @Field(() => Boolean, { nullable: true })
+  isCreatedWithSocialMedia?: boolean;
+
+  @Field(() => ImageObject, { nullable: true })
+  @Prop({ type: mongoose.Schema.Types.Mixed })
+  @IsOptional()
+  avatar?: ImageObject;
+
+  @Prop({
+    type: String,
+    enum: [...Object.values(UserImageStatusEnum)],
+    default: UserImageStatusEnum.DRAFT,
+  })
+  @Field(() => UserImageStatusEnum, { nullable: true })
+  @IsEnum(UserImageStatusEnum)
+  @IsOptional()
+  avatarStatus?: UserImageStatusEnum;
 }
 
 type TUser = Document<UserEntity>;

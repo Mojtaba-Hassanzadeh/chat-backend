@@ -5,13 +5,13 @@ import {
   UpdatePermissionInput,
   UpdatePermissionOutput,
 } from '../dto/update-permission.dto';
-import { PermissionHelepr } from '../helper/permission-helper';
+import { PermissionHelper } from '../helper/permission-helper';
 
 @Injectable()
 export class UpdatePermissionUseCase {
   constructor(
     private readonly commandBus: CommandBus,
-    private readonly helper: PermissionHelepr,
+    private readonly helper: PermissionHelper,
   ) {}
 
   async updatePermission(

@@ -7,7 +7,7 @@ import {
   PermissionEntitySchema,
 } from './entity/permission.entity';
 import { PermissionEntityFactory } from './entity/permission.factory';
-import { PermissionHelepr } from './helper/permission-helper';
+import { PermissionHelper } from './helper/permission-helper';
 import { PermissionModelFactory } from './model/permission-model.factory';
 import { PermissionRepository } from './permission.repository';
 import PermissionDataLoader from './persmission.loader';
@@ -30,10 +30,10 @@ import { PermissionUseCases } from './use-case';
     PermissionRepository,
     PermissionModelFactory,
     PermissionEntityFactory,
-    PermissionHelepr,
+    PermissionHelper,
     PermissionDataLoader,
   ],
-  exports: [...PermissionUseCases, PermissionHelepr],
+  exports: [...PermissionUseCases, PermissionHelper],
 })
 @Global()
 export class PermissionModule {}

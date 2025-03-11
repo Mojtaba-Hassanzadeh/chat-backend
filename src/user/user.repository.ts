@@ -10,6 +10,7 @@ import {
   DEFAULT_COUNT,
   DEFAULT_PAGE,
 } from 'common/constants/pagination.constant';
+import { escapeRegex } from 'common/utils/escape-regx.util';
 
 @Injectable()
 export class UserRepository extends BaseRepository<
@@ -28,18 +29,45 @@ export class UserRepository extends BaseRepository<
   async search({
     count = DEFAULT_COUNT,
     page = DEFAULT_PAGE,
-    username,
+    text,
     email,
-    role,
+    phone,
+    displayName,
+    username,
+    roles,
+    permissions,
+    isVerified,
   }: SearchUserInput): Promise<SearchUserOutput> {
+    const safeText = text ? escapeRegex(text) : undefined;
+
+    let isVerifiedFilter: PipelineStage[] = [];
+    if (isVerified || isVerified === false) {
+      isVerifiedFilter = [
+        {
+          $match: { isVerified },
+        },
+      ];
+    }
+
     const pipeline: PipelineStage[] = [
       {
         $match: {
+          ...(text && {
+            $or: [
+              { $text: { $search: text } },
+              { phone: { $regex: safeText, $options: 'i' } },
+            ],
+          }),
+
+          ...(displayName && { displayName }),
           ...(username && { username }),
           ...(email && { email }),
-          ...(role && { role }),
+          ...(phone && { phone }),
+          ...(roles && { roles: { $in: roles } }),
+          ...(permissions && { permissions: { $in: permissions } }),
         },
       },
+      ...isVerifiedFilter,
       {
         $sort: { _id: -1 },
       },
@@ -64,5 +92,21 @@ export class UserRepository extends BaseRepository<
       totalCount,
       totalPages: Math.ceil(totalCount / count),
     };
+  }
+
+  public async removeRoleFromUsers(roleId: string) {
+    await this.userModel.updateMany({}, { $pull: { roles: roleId } });
+  }
+
+  public async findManyById(ids: string[]): Promise<UserModel[]> {
+    const usersEntity = await this.userModel
+      .find({ _id: { $in: ids } })
+      .lean()
+      .exec();
+
+    const usersModel = await Promise.all(
+      usersEntity.map((user) => this.userEntityFactory.createFromEntity(user)),
+    );
+    return usersModel;
   }
 }

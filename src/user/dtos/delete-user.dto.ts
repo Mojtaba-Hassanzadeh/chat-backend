@@ -4,7 +4,7 @@ import { CoreOutput } from 'common/dtos/output.dto';
 @InputType()
 export class DeleteUserInput {
   @Field(() => String)
-  id: string;
+  userId: string;
 }
 
 @ObjectType()

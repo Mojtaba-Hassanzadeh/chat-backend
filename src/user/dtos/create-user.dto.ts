@@ -1,16 +1,38 @@
-import { Field, InputType, ObjectType, OmitType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType, PickType } from '@nestjs/graphql';
 import { UserEntity } from '../entities/user.entity';
-// import { CoreOutput } from 'common/dtos/output.dto';
+import { IsOptional, Matches } from 'class-validator';
+import { IsObjectId } from 'common/decorators/is-object-id.decorator';
+import { CoreOutput } from 'common/dtos/output.dto';
 
 @InputType()
-export class CreateUserInput extends OmitType(UserEntity, [
-  '_id',
-  'createdAt',
-  'updatedAt',
-]) {}
+export class CreateUserInput extends PickType(UserEntity, [
+  'displayName',
+  'username',
+  'email',
+  'phone',
+  'isVerified',
+  'refreshToken',
+  'isCreatedWithSocialMedia',
+  'avatarStatus',
+  'avatar',
+] as const) {
+  @Field(() => String)
+  @IsOptional()
+  @Matches(/^(?=.*\d)(?=.*[a-zA-Z]).{6,}$/, {
+    message: 'رمز عبور باید حداقل 6 کاراکتر ، حداقل یک حرف و یک عدد داشته باشد',
+  })
+  password: string;
+
+  @Field(() => [String], { nullable: true })
+  @IsObjectId({ each: true })
+  @IsOptional()
+  permissions?: string[];
+
+  @Field(() => [String], { nullable: true })
+  @IsObjectId({ each: true })
+  @IsOptional()
+  roles?: string[];
+}
 
 @ObjectType()
-export class CreateUserOutput {
-  @Field(() => Boolean)
-  success: boolean;
-} //extends CoreOutput {}
+export class CreateUserOutput extends CoreOutput {}

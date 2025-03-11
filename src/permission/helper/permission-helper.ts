@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -18,9 +19,12 @@ import { PermissionRepository } from '../permission.repository';
 import { FindPermissionByIdQuery } from '../query/find-permission-by-id/find-permission-by-id.query';
 import { FindPermissionOneItemByNameQuery } from '../query/find-permission-one-item-by-name/find-permission-one-item-by-name.query';
 import { FindPermissionOneItemByTitleQuery } from '../query/find-permission-one-item-by-title/find-permission-one-item-by-title.query';
+import { UserEntity } from 'src/user/entities/user.entity';
+import { RoleModel } from 'src/role/model/role.model';
+import { FindRoleByIdsQuery } from 'src/role/query/find-role-by-ids/find-role-by-ids.query';
 
 @Injectable()
-export class PermissionHelepr {
+export class PermissionHelper {
   constructor(
     private readonly queryBus: QueryBus,
     private readonly repository: PermissionRepository,
@@ -126,44 +130,44 @@ export class PermissionHelepr {
     }
   }
 
-  // async canUserPerformAction({
-  //   user,
-  //   permission,
-  //   message,
-  // }: {
-  //   user: UserEntity;
-  //   permission: PermissionModel;
-  //   message: string;
-  // }): Promise<boolean> {
-  //   const requiredPermissions = [permission.getId(), permission.getParent()];
+  async canUserPerformAction({
+    user,
+    permission,
+    message,
+  }: {
+    user: UserEntity;
+    permission: PermissionModel;
+    message: string;
+  }): Promise<boolean> {
+    const requiredPermissions = [permission.getId(), permission.getParent()];
 
-  //   const rolePermissionIds = await this.getPermissionsFromRoles(user.roles);
-  //   if (this.hasRequiredPermission(rolePermissionIds, requiredPermissions))
-  //     return true;
-  //   const userPermissionIds = await this.getPermissionsFromUser(
-  //     user.permissions,
-  //   );
-  //   if (this.hasRequiredPermission(userPermissionIds, requiredPermissions))
-  //     return true;
+    const rolePermissionIds = await this.getPermissionsFromRoles(user.roles);
+    if (this.hasRequiredPermission(rolePermissionIds, requiredPermissions))
+      return true;
+    const userPermissionIds = await this.getPermissionsFromUser(
+      user.permissions,
+    );
+    if (this.hasRequiredPermission(userPermissionIds, requiredPermissions))
+      return true;
 
-  //   throw new ForbiddenException(message);
-  // }
+    throw new ForbiddenException(message);
+  }
 
-  // private async getPermissionsFromRoles(roleIds: string[]): Promise<string[]> {
-  //   const userRoles: RoleModel[] = await this.queryBus.execute(
-  //     new FindRoleByIdsQuery({ ids: roleIds }),
-  //   );
-  //   const rolePermissionIds = userRoles.flatMap((role) =>
-  //     role.getPermissions(),
-  //   );
+  private async getPermissionsFromRoles(roleIds: string[]): Promise<string[]> {
+    const userRoles: RoleModel[] = await this.queryBus.execute(
+      new FindRoleByIdsQuery({ ids: roleIds }),
+    );
+    const rolePermissionIds = userRoles.flatMap((role) =>
+      role.getPermissions(),
+    );
 
-  //   const uniquePermissions = new Set<string>();
+    const uniquePermissions = new Set<string>();
 
-  //   const permissions = await this.getPermissionWithChildes(rolePermissionIds);
-  //   permissions.forEach(({ _id }) => uniquePermissions.add(_id.toString()));
+    const permissions = await this.getPermissionWithChildes(rolePermissionIds);
+    permissions.forEach(({ _id }) => uniquePermissions.add(_id.toString()));
 
-  //   return Array.from(uniquePermissions);
-  // }
+    return Array.from(uniquePermissions);
+  }
 
   private async getPermissionsFromUser(
     userPermissions: string[],

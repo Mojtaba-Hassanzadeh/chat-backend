@@ -6,13 +6,13 @@ import {
   DeletePermissionInput,
   DeletePermissionOutput,
 } from '../dto/delete-permission.dto';
-import { PermissionHelepr } from '../helper/permission-helper';
+import { PermissionHelper } from '../helper/permission-helper';
 
 @Injectable()
 export class DeletePermissionUseCase {
   constructor(
     private readonly commandBus: CommandBus,
-    private readonly helepr: PermissionHelepr,
+    private readonly helepr: PermissionHelper,
   ) {}
 
   async deletePermission(

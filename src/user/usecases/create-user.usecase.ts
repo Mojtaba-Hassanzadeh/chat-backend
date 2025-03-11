@@ -21,12 +21,20 @@ export class CreateUserUsecase {
 
   async create(input: CreateUserInput): Promise<CreateUserOutput> {
     try {
-      const { email } = input;
+      let user: UserModel;
+      if (input.phone) {
+        user = await this.queryBus.execute(
+          new FindOneUserQuery({ phone: input.phone }),
+        );
+      }
+      if (user) throw new BadRequestException('USER_ALREADY_EXISTS');
 
-      const user: UserModel | null = await this.queryBus.execute(
-        new FindOneUserQuery({ email }),
-      );
-      if (user) throw new BadRequestException('The email already exists');
+      if (input.email) {
+        user = await this.queryBus.execute(
+          new FindOneUserQuery({ email: input.email }),
+        );
+      }
+      if (user) throw new BadRequestException('USER_ALREADY_EXISTS');
 
       await this.commandBus.execute(new CreateUserCommand(input));
 

@@ -1,10 +1,18 @@
-import { UserRole } from '../enums/user-role.enum';
+import { ImageObject } from 'common/entities/image-object.entity';
+import { UserImageStatusEnum } from '../enums/user-image-status.enum';
 
 export class UserModelDto {
   _id: string;
-  username: string;
-  email: string;
-  password: string;
-  avatar?: string;
-  role?: UserRole;
+  displayName?: string;
+  username?: string;
+  email?: string;
+  phone?: string;
+  roles?: string[];
+  permissions?: string[];
+  password?: string;
+  isVerified?: boolean;
+  refreshToken?: string[];
+  isCreatedWithSocialMedia?: boolean;
+  avatar?: ImageObject;
+  avatarStatus?: UserImageStatusEnum;
 }

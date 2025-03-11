@@ -12,24 +12,52 @@ export class UserEntityFactory
     if (!user) return null;
     return {
       _id: new ObjectId(user.getId()),
+      displayName: user.getDisplayName(),
       username: user.getUsername(),
       email: user.getEmail(),
+      phone: user.getPhone(),
+      roles: user.getRoles(),
+      permissions: user.getPermissions(),
       password: user.getPassword(),
-      role: user.getRole(),
+      isVerified: user.getIsVerified(),
+      refreshToken: user.getRefreshTokens(),
+      isCreatedWithSocialMedia: user.getIsCreatedWithSocialMedia(),
       avatar: user.getAvatar(),
+      avatarStatus: user.getAvatarStatus(),
     };
   }
-  createFromEntity(user: UserEntity): UserModel {
-    if (!user) return null;
-    const { _id, username, email, password, role, avatar } = user;
+  createFromEntity(userEntity: UserEntity): UserModel {
+    if (!userEntity) return null;
+    const {
+      _id,
+      displayName,
+      username,
+      email,
+      phone,
+      roles,
+      permissions,
+      password,
+      isVerified,
+      refreshToken,
+      isCreatedWithSocialMedia,
+      avatar,
+      avatarStatus,
+    } = userEntity;
 
     return new UserModel({
       _id: _id.toHexString(),
+      displayName,
       username,
       email,
+      phone,
+      roles,
+      permissions,
       password,
-      role,
+      isVerified,
+      refreshToken,
+      isCreatedWithSocialMedia,
       avatar,
+      avatarStatus,
     });
   }
 }
