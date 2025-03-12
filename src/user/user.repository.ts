@@ -11,6 +11,10 @@ import {
   DEFAULT_PAGE,
 } from 'common/constants/pagination.constant';
 import { escapeRegex } from 'common/utils/escape-regx.util';
+import {
+  FindUserByEmailInput,
+  FindUserByPhoneAndEmailInput,
+} from './dtos/find-user.dto';
 
 @Injectable()
 export class UserRepository extends BaseRepository<
@@ -24,6 +28,28 @@ export class UserRepository extends BaseRepository<
     protected readonly userEntityFactory: UserEntityFactory,
   ) {
     super(userModel, userEntityFactory);
+  }
+
+  public async findByEmailAndIsVerified(
+    { email }: FindUserByEmailInput,
+    isPasswordSelected?: boolean,
+  ): Promise<UserModel | null> {
+    const user = await this.userModel
+      .findOne({ $and: [{ email }, { isVerified: true }] })
+      .select(isPasswordSelected ? '+password' : undefined)
+      .exec();
+    return this.userEntityFactory.createFromEntity(user);
+  }
+
+  public async findByPhoneAndIsVerified(
+    { phone }: FindUserByPhoneAndEmailInput,
+    isPasswordSelected?: boolean,
+  ): Promise<UserModel | null> {
+    const user = await this.userModel
+      .findOne({ $and: [{ phone }, { isVerified: true }] })
+      .select(isPasswordSelected ? '+password' : undefined)
+      .exec();
+    return this.userEntityFactory.createFromEntity(user);
   }
 
   async search({
