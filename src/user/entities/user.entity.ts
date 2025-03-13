@@ -20,7 +20,7 @@ import mongoose, { CallbackError } from 'mongoose';
 import { PermissionEntity } from 'src/permission/entity/permission.entity';
 import { RoleEntity } from 'src/role/entity/role.entity';
 import { UserImageStatusEnum } from '../enums/user-image-status.enum';
-import { ImageObject } from 'common/entities/image-object.entity';
+import { ImageEntity } from 'src/image/entity/image.entity';
 
 @InputType({ isAbstract: true })
 @ObjectType()
@@ -111,10 +111,10 @@ export class UserEntity extends DefaultEntity {
   @Field(() => Boolean, { nullable: true })
   isCreatedWithSocialMedia?: boolean;
 
-  @Field(() => ImageObject, { nullable: true })
+  @Field(() => ImageEntity, { nullable: true })
   @Prop({ type: mongoose.Schema.Types.Mixed })
   @IsOptional()
-  avatar?: ImageObject;
+  avatar?: ImageEntity;
 
   @Prop({
     type: String,
