@@ -5,6 +5,7 @@ export enum CollectionName {
   PERMISSION = 'permission',
   USER_ROLE = 'userRole',
   OTP = 'otp',
+  IMAGE = 'images',
 }
 
 registerEnumType(CollectionName, {

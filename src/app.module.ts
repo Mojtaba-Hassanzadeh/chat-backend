@@ -2,12 +2,14 @@ import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as Joi from 'joi';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { RootModule } from './root/root.module';
 import { ClientIdMiddleWare } from './auth/middleware/client-id.middleware';
+import { CacheModule } from '@nestjs/cache-manager';
+import * as redisStore from 'cache-manager-redis-store';
 
 @Module({
   imports: [
@@ -56,6 +58,23 @@ import { ClientIdMiddleWare } from './auth/middleware/client-id.middleware';
       inject: [],
     }),
     MongooseModule.forRoot(process.env.MONGO_URI as string),
+    CacheModule.registerAsync<any>({
+      isGlobal: true,
+      useFactory: (config: ConfigService) => {
+        const host = config.get('REDIS_HOST');
+        const port = config.get('REDIS_PORT');
+        const ttl = config.get('TTL_CACHE');
+
+        return {
+          store: redisStore,
+          host,
+          port,
+          ttl,
+        };
+      },
+      imports: [ConfigModule],
+      inject: [ConfigService],
+    }),
     RootModule,
   ],
   controllers: [],
