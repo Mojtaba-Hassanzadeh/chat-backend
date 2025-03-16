@@ -3,9 +3,9 @@ import { IQueryHandler, QueryBus, QueryHandler } from '@nestjs/cqrs';
 import * as argon2 from 'argon2';
 import { SigninOutput } from 'src/auth/dto/signin.dto';
 import { JwtHelper } from 'src/auth/helper/jwt.helper';
-import { UserModel } from 'src/user/models/user.model';
+import { UserModel } from 'src/user/model/user.model';
 import { SigninWithOtpQuery } from './signin-with-otp.query';
-import { FindOneUserQuery } from 'src/user/queries/find-one-user/find-one-user.query';
+import { FindOneUserQuery } from 'src/user/query/find-one-user/find-one-user.query';
 
 @QueryHandler(SigninWithOtpQuery)
 export class SigninWithOtpHandler implements IQueryHandler<SigninWithOtpQuery> {

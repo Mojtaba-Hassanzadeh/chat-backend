@@ -5,8 +5,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { FindUserByIdQuery } from '../queries/find-user-by-id/find-user-by-id.query';
-import { UserModel } from '../models/user.model';
+import { FindUserByIdQuery } from '../query/find-user-by-id/find-user-by-id.query';
+import { UserModel } from '../model/user.model';
 import { FileUpload } from 'graphql-upload-minimal';
 import sharp from 'sharp';
 

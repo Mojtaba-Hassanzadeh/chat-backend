@@ -2,9 +2,9 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { JwtService } from '@nestjs/jwt';
-import { UpdateUserCommand } from 'src/user/commands/update-user/update-user.command';
-import { UserModel } from 'src/user/models/user.model';
-import { FindUserByIdQuery } from 'src/user/queries/find-user-by-id/find-user-by-id.query';
+import { UpdateUserCommand } from 'src/user/command/update-user/update-user.command';
+import { UserModel } from 'src/user/model/user.model';
+import { FindUserByIdQuery } from 'src/user/query/find-user-by-id/find-user-by-id.query';
 import * as argon2 from 'argon2';
 
 @Injectable()

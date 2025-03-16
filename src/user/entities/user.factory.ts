@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ModelEntityFactory } from 'common/repositories/model-entity';
 import { UserEntity } from '../entities/user.entity';
 import { ObjectId } from 'mongodb';
-import { UserModel } from '../models/user.model';
+import { UserModel } from '../model/user.model';
 
 @Injectable()
 export class UserEntityFactory

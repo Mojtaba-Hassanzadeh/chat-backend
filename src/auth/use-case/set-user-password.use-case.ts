@@ -12,10 +12,10 @@ import mongoose from 'mongoose';
 import { DeleteOtpCommand } from 'src/otp/command/delete-otp/delete-otp.command';
 import { OtpModel } from 'src/otp/model/otp.model';
 import { FindOtpByPhoneQuery } from 'src/otp/query/find-otp-by-phone/find-otp-by-phone.query';
-import { UserModel } from 'src/user/models/user.model';
+import { UserModel } from 'src/user/model/user.model';
 import { SetPasswordInput } from '../dto/pass-recovery.dto';
-import { UpdateUserCommand } from 'src/user/commands/update-user/update-user.command';
-import { FindOneUserQuery } from 'src/user/queries/find-one-user/find-one-user.query';
+import { UpdateUserCommand } from 'src/user/command/update-user/update-user.command';
+import { FindOneUserQuery } from 'src/user/query/find-one-user/find-one-user.query';
 
 @Injectable()
 export class SetPasswordUseCase {

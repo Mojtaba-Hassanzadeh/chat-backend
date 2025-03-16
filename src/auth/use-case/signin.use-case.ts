@@ -6,11 +6,11 @@ import {
 } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import * as argon2 from 'argon2';
-import { UserModel } from 'src/user/models/user.model';
+import { UserModel } from 'src/user/model/user.model';
 import { SigninInput, SigninOutput } from '../dto/signin.dto';
 import { JwtHelper } from '../helper/jwt.helper';
-import { FindUserByEmailAndIsVerifiedQuery } from 'src/user/queries/find-user-by-email-and-is-verified/find-user-by-email-and-is-verified.query';
-import { FindUserByPhoneAndIsVerifiedQuery } from 'src/user/queries/find-user-by-phone-and-is-verified/find-user-by-phone-and-is-verified.query';
+import { FindUserByEmailAndIsVerifiedQuery } from 'src/user/query/find-user-by-email-and-is-verified/find-user-by-email-and-is-verified.query';
+import { FindUserByPhoneAndIsVerifiedQuery } from 'src/user/query/find-user-by-phone-and-is-verified/find-user-by-phone-and-is-verified.query';
 
 @Injectable()
 export class SigninUseCase {

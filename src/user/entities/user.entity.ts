@@ -19,7 +19,7 @@ import { SchemaFactory } from 'common/utils/schema-factory.util';
 import mongoose, { CallbackError } from 'mongoose';
 import { PermissionEntity } from 'src/permission/entity/permission.entity';
 import { RoleEntity } from 'src/role/entity/role.entity';
-import { UserImageStatusEnum } from '../enums/user-image-status.enum';
+import { UserImageStatusEnum } from '../enum/user-image-status.enum';
 import { ImageEntity } from 'src/image/entity/image.entity';
 
 @InputType({ isAbstract: true })

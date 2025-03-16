@@ -2,7 +2,7 @@ import { Injectable, Scope } from '@nestjs/common';
 import DataLoader from 'dataloader';
 import { FindPermissionByIdsUseCase } from 'src/permission/use-case/find-permission-by-ids.use-case';
 import { FindRoleByIdsUseCase } from 'src/role/use-case/find-role-by-ids.use-case';
-import { FindUsersByIdsUseCase } from './usecases/find-users-by-ids.use-case';
+import { FindUsersByIdsUseCase } from './usecase/find-users-by-ids.use-case';
 
 @Injectable({ scope: Scope.REQUEST })
 export default class UserDataLoader {

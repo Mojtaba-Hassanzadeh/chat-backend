@@ -4,14 +4,14 @@ import { generateOTP } from 'common/utils/generate-otp.util';
 import { SendMailUseCase } from 'src/email/use-case/send-mail.use-case';
 import { CreateOtpCommand } from 'src/otp/command/create-otp/create-otp.command';
 import { SendSmsUseCase } from 'src/sms/use-case/send-sms.use-case';
-import { CreateUserWithEmailCommand } from 'src/user/commands/create-user-with-email/create-user-with-email.command';
-import { CreateUserWithPhoneCommand } from 'src/user/commands/create-user-with-phone/create-user-with-phone.command';
-import { UserModel } from 'src/user/models/user.model';
+import { CreateUserWithEmailCommand } from 'src/user/command/create-user-with-email/create-user-with-email.command';
+import { CreateUserWithPhoneCommand } from 'src/user/command/create-user-with-phone/create-user-with-phone.command';
+import { UserModel } from 'src/user/model/user.model';
 import {
   SendVerificationCodeInput,
   SendVerificationCodeOutput,
 } from '../dto/send-verification-code.dto';
-import { FindOneUserQuery } from 'src/user/queries/find-one-user/find-one-user.query';
+import { FindOneUserQuery } from 'src/user/query/find-one-user/find-one-user.query';
 
 @Injectable()
 export class SendVerificationCodeUseCase {

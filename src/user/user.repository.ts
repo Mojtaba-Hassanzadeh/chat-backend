@@ -3,9 +3,9 @@ import { InjectModel } from '@nestjs/mongoose';
 import { TUser, UserEntity } from './entities/user.entity';
 import { Model, PipelineStage } from 'mongoose';
 import { BaseRepository } from 'common/repositories/base-repository';
-import { UserModel } from './models/user.model';
+import { UserModel } from './model/user.model';
 import { UserEntityFactory } from './entities/user.factory';
-import { SearchUserInput, SearchUserOutput } from './dtos/search-user.dto';
+import { SearchUserInput, SearchUserOutput } from './dto/search-user.dto';
 import {
   DEFAULT_COUNT,
   DEFAULT_PAGE,
@@ -14,7 +14,7 @@ import { escapeRegex } from 'common/utils/escape-regx.util';
 import {
   FindUserByEmailInput,
   FindUserByPhoneAndEmailInput,
-} from './dtos/find-user.dto';
+} from './dto/find-user.dto';
 
 @Injectable()
 export class UserRepository extends BaseRepository<

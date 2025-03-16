@@ -13,10 +13,10 @@ import { DeleteOtpCommand } from 'src/otp/command/delete-otp/delete-otp.command'
 import { OtpModel } from 'src/otp/model/otp.model';
 import { FindOtpByEmailQuery } from 'src/otp/query/find-otp-by-email.query.ts/find-otp-by-email.query';
 import { FindOtpByPhoneQuery } from 'src/otp/query/find-otp-by-phone/find-otp-by-phone.query';
-import { UserModel } from 'src/user/models/user.model';
+import { UserModel } from 'src/user/model/user.model';
 import { SetPasswordInput } from '../dto/pass-recovery.dto';
-import { FindOneUserQuery } from 'src/user/queries/find-one-user/find-one-user.query';
-import { UpdateUserCommand } from 'src/user/commands/update-user/update-user.command';
+import { FindOneUserQuery } from 'src/user/query/find-one-user/find-one-user.query';
+import { UpdateUserCommand } from 'src/user/command/update-user/update-user.command';
 
 @Injectable()
 export class PassRecoveryUseCase {

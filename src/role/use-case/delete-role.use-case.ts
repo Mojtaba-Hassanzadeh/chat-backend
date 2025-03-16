@@ -3,7 +3,7 @@ import { CommandBus } from '@nestjs/cqrs';
 import { InjectConnection } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { DeleteRoleCommand } from '../command/delete-role/delete-role.command';
-import { RemoveRoleFromUsersCommand } from 'src/user/commands/remove-role-from-users/remove-role-from-users.command';
+import { RemoveRoleFromUsersCommand } from 'src/user/command/remove-role-from-users/remove-role-from-users.command';
 import { DeleteRoleInput, DeleteRoleOutput } from '../dto/delete-role.dto';
 import { RoleHelepr } from '../helper/role-helper';
 

@@ -5,10 +5,10 @@ import {
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CoreOutput } from 'common/dtos/output.dto';
-import { CreateUserCommand } from 'src/user/commands/create-user/create-user.command';
-import { UserModel } from 'src/user/models/user.model';
+import { CreateUserCommand } from 'src/user/command/create-user/create-user.command';
+import { UserModel } from 'src/user/model/user.model';
 import { SignupInput } from '../dto/signup.dto';
-import { FindOneUserQuery } from 'src/user/queries/find-one-user/find-one-user.query';
+import { FindOneUserQuery } from 'src/user/query/find-one-user/find-one-user.query';
 
 @Injectable()
 export class SignupUseCase {

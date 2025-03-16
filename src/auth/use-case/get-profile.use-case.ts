@@ -6,8 +6,8 @@ import {
 } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { UserEntityFactory } from 'src/user/entities/user.factory';
-import { UserModel } from 'src/user/models/user.model';
-import { FindUserByIdQuery } from 'src/user/queries/find-user-by-id/find-user-by-id.query';
+import { UserModel } from 'src/user/model/user.model';
+import { FindUserByIdQuery } from 'src/user/query/find-user-by-id/find-user-by-id.query';
 import { GetProfileInput, GetProfileOutput } from '../dto/get-profile.dto';
 
 @Injectable()

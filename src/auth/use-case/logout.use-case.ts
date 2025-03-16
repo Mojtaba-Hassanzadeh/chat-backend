@@ -6,10 +6,10 @@ import {
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import * as argon2 from 'argon2';
-import { UserModel } from 'src/user/models/user.model';
-import { FindUserByIdQuery } from 'src/user/queries/find-user-by-id/find-user-by-id.query';
+import { UserModel } from 'src/user/model/user.model';
+import { FindUserByIdQuery } from 'src/user/query/find-user-by-id/find-user-by-id.query';
 import { LogoutOutput } from '../dto/logout.dto';
-import { UpdateUserCommand } from 'src/user/commands/update-user/update-user.command';
+import { UpdateUserCommand } from 'src/user/command/update-user/update-user.command';
 
 @Injectable()
 export class LogoutUseCase {

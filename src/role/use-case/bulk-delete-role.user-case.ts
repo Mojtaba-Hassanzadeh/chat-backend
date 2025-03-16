@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import { BulkDeleteRoleCommand } from '../command/bulk-delete-role/bulk-delete-role.command';
 import { BulkDeleteRoleInput, DeleteRoleOutput } from '../dto/delete-role.dto';
 import { RoleHelepr } from '../helper/role-helper';
-import { RemoveRoleFromUsersCommand } from 'src/user/commands/remove-role-from-users/remove-role-from-users.command';
+import { RemoveRoleFromUsersCommand } from 'src/user/command/remove-role-from-users/remove-role-from-users.command';
 
 @Injectable()
 export class BulkDeleteRoleUseCase {
